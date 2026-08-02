@@ -1,0 +1,129 @@
+{
+  "questions": [
+    {
+      "category": "Authority",
+      "control": {
+        "messages": [
+          {
+            "text": "A mate, Jim Smith, is asking for 10 dollars to help pay for his server for his website.",
+            "cost": 10
+          }
+        ]
+      },
+      "treatment": {
+        "messages": [
+          {
+            "text": "Richard Buckland needs 10 dollars to help pay for the servers for OpenLearning.",
+            "cost": 10
+          }
+        ]
+      }
+    },
+    {
+      "category": "Commitment",
+      "control": {
+        "messages": [
+          {
+            "text": "Hey, can I have 10 dollars?",
+            "cost": 10
+          }
+        ]
+      },
+      "treatment": {
+        "messages": [
+          {
+            "text": "Hey, can I have 5 dollars?",
+            "cost": 5
+          },
+          {
+            "text": "Can I have another 5 dollars?",
+            "cost": 5
+          }
+        ]
+      }
+    },
+    {
+      "category": "Liking",
+      "control": {
+        "messages": [
+          {
+            "text": "My friend, Joe, thinks Psychology students are really impressive for the amount of work they put into their essays and research. Can he have 10 dollars for lunch?",
+            "cost": 10
+          }
+        ]
+      },
+      "treatment": {
+        "messages": [
+          {
+            "text": "My friend, Joe, thinks Cybersecurity students are really impressive for how well they can tackle problems and understand difficult concepts. Can he have 10 dollars for lunch?",
+            "cost": 10
+          }
+        ]
+      }
+    },
+    {
+      "category": "Reciprocity",
+      "control": {
+        "messages": [
+          {
+            "text": "Joe asks for another 10 dollars, he forgot lunch at uni was double his usual lunch cost of 10 dollars, can he have 10 dollars?",
+            "cost": 10
+          }
+        ]
+      },
+      "treatment": {
+        "messages": [
+          {
+            "text": "Here is $5",
+            "cost": -5
+          },
+          {
+            "text": "I forgot lunch at uni, can I have 10 dollars.",
+            "cost": 10
+          }
+        ]
+      }
+    },
+    {
+      "category": "Scarcity",
+      "control": {
+        "messages": [
+          {
+            "text": "Can you spot Jasmine 10 dollars for a ladder, her cat is in a tree?",
+            "cost": 10
+          }
+        ]
+      },
+      "treatment": {
+        "messages": [
+          {
+            "text": "Quick, Jasmine needs 10 dollars to buy a ladder to get her cat out of the tree!",
+            "cost": 10
+          }
+        ],
+        "time_limit_seconds": 5
+      }
+    },
+    {
+      "category": "Social Proof",
+      "control": {
+        "banner": "10% of participants said they will give 10 dollars",
+        "messages": [
+          {
+            "text": "Julia needs 10 dollars to finish paying for groceries",
+            "cost": 10
+          }
+        ]
+      },
+      "treatment": {
+        "banner": "80% of participants said they will give 10 dollars",
+        "messages": [
+          {
+            "text": "Julia needs 10 dollars to finish paying for groceries",
+            "cost": 10
+          }
+        ]
+      }
+    }
+  ]
+}

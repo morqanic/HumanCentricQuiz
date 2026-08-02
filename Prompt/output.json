@@ -1,0 +1,39 @@
+{
+  "answers": [
+    {
+      "category": "Authority",
+      "treatment": true,
+      "paid": 10
+    },
+    {
+      "category": "Commitment",
+      "treatment": true,
+      "paid": 0
+    },
+    {
+      "category": "Liking",
+      "treatment": false,
+      "paid": 5
+    },
+    {
+      "category": "Reciprocity",
+      "treatment": false,
+      "paid": 0
+    },
+    {
+      "category": "Scarcity",
+      "treatment": false,
+      "paid": 10
+    },
+    {
+      "category": "Social Proof",
+      "treatment": true,
+      "paid": 10
+    },
+    {
+      "category": "Unity",
+      "treatment": true,
+      "paid": 10
+    }
+  ]
+}
