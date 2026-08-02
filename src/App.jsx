@@ -1,17 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
 import './App.css'
 import IntroScreen from './components/IntroScreen'
 import PhonePrompt from './components/PhonePrompt'
 import ResultsTable from './components/ResultsTable'
 import inputQuestions from '../Prompt/input.json'
 import { createResultEntry, getNextThemeColor, getQuestionCost, getQuestionText, getQuestionTimeLimit, prepareQuestions, STARTING_BALANCE } from './utils/experiment'
+import { supabase } from './supabaseClient'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 const runId = crypto.randomUUID()
 
-const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null
 
 function App() {
   const [phase, setPhase] = useState('intro')
@@ -166,8 +163,10 @@ function App() {
     return (
       <main className="app-shell">
         <section className="screen-card">
-          <h1>Experiment complete</h1>
+          <h1>Experiment Complete 🎉</h1>
           <p className="app-description">Your results have been saved, thanks for your participation!</p>
+          <p className="app-description">During the experiment you were randomly given the control or experiment message. Red shows when you declined and green is when you accepted.</p>
+
           {/* <div className="actions-row">
             <button className="primary-btn" onClick={handleRestart}>Start again</button>
             <button className="secondary-btn" onClick={handleDownload}>Download output.json</button>
@@ -201,9 +200,9 @@ function App() {
 
         {isTransitioning ? <p className="helper-text">Loading next prompt…</p> : null}
 
-        <p className="helper-text">
+        {/* <p className="helper-text">
           {currentQuestion?.category} • {variant}
-        </p>
+        </p> */}
       </section>
     </main>
   )

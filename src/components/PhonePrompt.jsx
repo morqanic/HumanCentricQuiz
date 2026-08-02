@@ -143,7 +143,14 @@ function PhonePrompt({
             <span>
               Question {currentQuestionIndex + 1}/{totalQuestions}
             </span>
-            <span>{timeLeft}s</span>
+            <div className="timer-bar">
+              <div
+                className="timer-bar-fill"
+                style={{
+                  width: `${Math.max(0, (timeLeft / timeLimit) * 100)}%`,
+                }}
+              />
+            </div>
           </div>
 
           <div className="phone-content">
