@@ -5,7 +5,14 @@ import PhonePrompt from './components/PhonePrompt'
 import ResultsTable from './components/ResultsTable'
 import inputQuestions from '../Prompt/input.json'
 import { createResultEntry, getNextThemeColor, getQuestionCost, getQuestionText, getQuestionTimeLimit, prepareQuestions, STARTING_BALANCE } from './utils/experiment'
-import { supabase } from './supabaseClient'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+const supabase = createClient(
+  supabaseUrl,
+  supabaseKey
+)
 
 const runId = crypto.randomUUID()
 
