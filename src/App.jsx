@@ -9,6 +9,7 @@ import { createResultEntry, getNextThemeColor, getQuestionCost, getQuestionText,
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const runId = crypto.randomUUID()
 
 const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null
 
@@ -44,13 +45,11 @@ function App() {
     window.localStorage.setItem('experiment-results', JSON.stringify(payload))
 
     if (!supabase) {
-      console.log("NO SUPABASE")
-      console.log(supabaseUrl, supabaseAnonKey)
-
       return
     }
 
     const rows = results.map((result) => ({
+      run_id: runId,
       started_at: payload.startedAt,
       balance: payload.balance,
       category: result.category,
@@ -167,12 +166,12 @@ function App() {
       <main className="app-shell">
         <section className="screen-card">
           <h1>Experiment complete</h1>
-          <p className="app-description">Your results have been saved locally and are shown below.</p>
-          <div className="actions-row">
+          <p className="app-description">Your results have been saved, thanks for your participation!</p>
+          {/* <div className="actions-row">
             <button className="primary-btn" onClick={handleRestart}>Start again</button>
             <button className="secondary-btn" onClick={handleDownload}>Download output.json</button>
-          </div>
-          <ResultsTable results={results} />
+          </div> */}
+          <ResultsTable userResults={results} />
         </section>
       </main>
     )
@@ -181,10 +180,10 @@ function App() {
   return (
     <main className="app-shell">
       <section className="screen-card">
-        <div className="top-bar">
+        {/* <div className="top-bar">
           <p className="eyebrow">Phone experiment</p>
           <p className="balance-pill">Balance: ${balance}</p>
-        </div>
+        </div> */}
 
         <PhonePrompt
           key={promptKey}
