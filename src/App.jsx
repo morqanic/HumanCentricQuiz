@@ -4,6 +4,7 @@ import IntroScreen from './components/IntroScreen'
 import PhonePrompt from './components/PhonePrompt'
 import ResultsTable from './components/ResultsTable'
 import inputQuestions from '../Prompt/input.json'
+import { createClient } from '@supabase/supabase-js'
 import { createResultEntry, getNextThemeColor, getQuestionCost, getQuestionText, getQuestionTimeLimit, prepareQuestions, STARTING_BALANCE } from './utils/experiment'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
