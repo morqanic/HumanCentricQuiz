@@ -30,6 +30,7 @@ function App() {
   const timeLimit = useMemo(() => getQuestionTimeLimit(currentQuestion, variant), [currentQuestion, variant])
   const color = useMemo(() => getNextThemeColor(questionIndex), [questionIndex])
   const promptKey = `${questionIndex}-${promptIndex}`
+  const banner = currentQuestion?.[variant]?.banner
 
   useEffect(() => {
     if (phase !== 'finished') {
@@ -188,6 +189,7 @@ function App() {
         <PhonePrompt
           key={promptKey}
           messages={visibleMessages}
+          banner={banner}
           color={color}
           timeLimit={timeLimit}
           currentQuestionIndex={questionIndex}

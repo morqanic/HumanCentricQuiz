@@ -1,7 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import '../App.css'
 
-function PhonePrompt({ messages, color, timeLimit, onDecision, currentQuestionIndex, totalQuestions, balance, balanceChange }) {
+function PhonePrompt({
+  messages,
+  banner,
+  color,
+  timeLimit,
+  onDecision,
+  currentQuestionIndex,
+  totalQuestions,
+  balance,
+  balanceChange,
+}) {
   const [timeLeft, setTimeLeft] = useState(timeLimit)
   const [hasResponded, setHasResponded] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -9,12 +19,31 @@ function PhonePrompt({ messages, color, timeLimit, onDecision, currentQuestionIn
   const [isFadingBalanceChange, setIsFadingBalanceChange] = useState(false)
   const hasRespondedRef = useRef(false)
 
-  const promptTexts = useMemo(() => (messages ?? []).map((message) => message.text), [messages])
-  const currentCost = Number((messages?.[messages.length - 1]?.cost ?? 0))
+  const promptTexts = useMemo(
+    () => (messages ?? []).map((message) => message.text),
+    [messages]
+  )
+
+  const currentCost = Number(
+    messages?.[messages.length - 1]?.cost ?? 0
+  )
+
   const canAccept = currentCost <= 0 || balance >= currentCost
   const insufficientBalance = currentCost > 0 && balance < currentCost
-  const changeLabel = balanceChange > 0 ? `▲ +$${Math.abs(balanceChange)}` : balanceChange < 0 ? `▼ -$${Math.abs(balanceChange)}` : ''
-  const changeStyle = balanceChange > 0 ? { color: '#166534' } : balanceChange < 0 ? { color: '#b91c1c' } : { color: '#4b3f4d' }
+
+  const changeLabel =
+    balanceChange > 0
+      ? `▲ +$${Math.abs(balanceChange)}`
+      : balanceChange < 0
+        ? `▼ -$${Math.abs(balanceChange)}`
+        : ''
+
+  const changeStyle =
+    balanceChange > 0
+      ? { color: '#166534' }
+      : balanceChange < 0
+        ? { color: '#b91c1c' }
+        : { color: '#4b3f4d' }
 
   useEffect(() => {
     hasRespondedRef.current = false
@@ -35,7 +64,9 @@ function PhonePrompt({ messages, color, timeLimit, onDecision, currentQuestionIn
 
   useEffect(() => {
     if (insufficientBalance) {
-      setErrorMessage(`You need at least $${currentCost} to accept this prompt.`)
+      setErrorMessage(
+        `You need at least $${currentCost} to accept this prompt.`
+      )
       return
     }
 
@@ -88,7 +119,9 @@ function PhonePrompt({ messages, color, timeLimit, onDecision, currentQuestionIn
     }
 
     if (decision === 'accept' && !canAccept) {
-      setErrorMessage(`You need at least $${currentCost} to accept this prompt.`)
+      setErrorMessage(
+        `You need at least $${currentCost} to accept this prompt.`
+      )
       return
     }
 
@@ -100,34 +133,88 @@ function PhonePrompt({ messages, color, timeLimit, onDecision, currentQuestionIn
   }
 
   return (
-    <section className="phone-card" style={{ '--phone-accent': color }}>
+    <section
+      className="phone-card"
+      style={{ '--phone-accent': color }}
+    >
       <div className="phone-shell">
         <div className="phone-screen">
           <div className="phone-header">
-            <span>Question {currentQuestionIndex + 1}/{totalQuestions}</span>
+            <span>
+              Question {currentQuestionIndex + 1}/{totalQuestions}
+            </span>
             <span>{timeLeft}s</span>
           </div>
 
           <div className="phone-content">
-            {promptTexts.length > 0 ? (
-              promptTexts.map((text, index) => (
-                <div key={`${text}-${index}`} className={`phone-bubble ${index === 0 ? 'primary-bubble' : 'secondary-bubble'}`}>
-                  <p>{text}</p>
-                </div>
-              ))
+
+            {banner ? (
+              <div className="experiment-banner">
+                {banner}
+              </div>
             ) : null}
+
+            {promptTexts.length > 0
+              ? promptTexts.map((text, index) => (
+                  <div
+                    key={`${text}-${index}`}
+                    className={`phone-bubble ${
+                      index === 0
+                        ? 'primary-bubble'
+                        : 'secondary-bubble'
+                    }`}
+                  >
+                    <p>{text}</p>
+                  </div>
+                ))
+              : null}
+
             <div className="balance-summary">
-              <p className="balance-pill">Balance: ${balance}</p>
-              {showBalanceChange ? <p className={`balance-change ${isFadingBalanceChange ? 'balance-change-fade' : ''}`} style={changeStyle}>{changeLabel}</p> : null}
+              <p className="balance-pill">
+                Balance: ${balance}
+              </p>
+
+              {showBalanceChange ? (
+                <p
+                  className={`balance-change ${
+                    isFadingBalanceChange
+                      ? 'balance-change-fade'
+                      : ''
+                  }`}
+                  style={changeStyle}
+                >
+                  {changeLabel}
+                </p>
+              ) : null}
             </div>
-            {errorMessage ? <p className="helper-text" role="alert" style={{ color: '#b91c1c', marginTop: '0.5rem' }}>{errorMessage}</p> : null}
+
+            {errorMessage ? (
+              <p
+                className="helper-text"
+                role="alert"
+                style={{
+                  color: '#b91c1c',
+                  marginTop: '0.5rem',
+                }}
+              >
+                {errorMessage}
+              </p>
+            ) : null}
           </div>
 
           <div className="phone-actions">
-            <button className="decline-btn" onClick={() => handleChoice('decline')}>
+            <button
+              className="decline-btn"
+              onClick={() => handleChoice('decline')}
+            >
               Decline
             </button>
-            <button className="accept-btn" onClick={() => handleChoice('accept')} disabled={!canAccept}>
+
+            <button
+              className="accept-btn"
+              onClick={() => handleChoice('accept')}
+              disabled={!canAccept}
+            >
               Accept
             </button>
           </div>
