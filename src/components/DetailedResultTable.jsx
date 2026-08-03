@@ -10,7 +10,7 @@ const supabase = createClient(
   supabaseKey
 )
 
-function ResultsTable({ userResults }) {
+function DetailedResultsTable({ userResults = [] }) {
   const [savedResults, setSavedResults] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -42,24 +42,22 @@ function ResultsTable({ userResults }) {
     )
   }
 
-  // Convert the current user's results into the same format
-  // as the Supabase results.
+  // Add the current user's results so they appear immediately,
+  // even if Supabase hasn't finished saving them.
   const currentResults = userResults.map((result) => ({
     category: result.category,
     variant: result.variant,
     decision: result.decision,
+    run_id: 'current-user',
   }))
 
-  // Combine saved results with the current round.
-  // This means the current round is included immediately,
-  // even if Supabase hasn't finished saving it yet.
   const allResults = [...savedResults, ...currentResults]
 
   if (!allResults.length) {
     return null
   }
 
-  // Calculate aggregate results.
+  // Group results by category/question.
   const categories = {}
 
   allResults.forEach((result) => {
@@ -74,26 +72,35 @@ function ResultsTable({ userResults }) {
     if (!categories[category]) {
       categories[category] = {
         control: {
-          total: 0,
+          users: new Set(),
           accepted: 0,
+          total: 0,
+
         },
         treatment: {
-          total: 0,
+          users: new Set(),
           accepted: 0,
+          total: 0,
         },
       }
+    }
+
+    // Count this user for this specific question + variant.
+    if (result.run_id) {
+      categories[category][variant].users.add(result.run_id)
     }
 
     if (decision != 'timeout') {
       categories[category][variant].total += 1
     }
 
+    // Count accepted responses.
     if (decision === 'accept') {
       categories[category][variant].accepted += 1
     }
   })
 
-  // Determine what the current user selected.
+  // highlight user choice
   const userChoices = {}
 
   userResults.forEach((result) => {
@@ -106,7 +113,6 @@ function ResultsTable({ userResults }) {
   const getCellClass = (category, variant) => {
     const userChoice = userChoices[category]
 
-    // User didn't receive this variant.
     if (!userChoice || userChoice.variant !== variant) {
       return 'result-not-received'
     }
@@ -130,26 +136,39 @@ function ResultsTable({ userResults }) {
         <thead>
           <tr>
             <th>Category</th>
-            <th>Control</th>
-            <th>Treatment</th>
+            <th>Control Users</th>
+            <th>Treatment Users</th>
+            <th>Control Acceptance</th>
+            <th>Treatment Acceptance</th>
           </tr>
         </thead>
 
         <tbody>
           {Object.entries(categories).map(([category, data]) => {
+            const controlUsers = data.control.users.size
+            const treatmentUsers = data.treatment.users.size
+
             const controlRate =
-              data.control.total > 0
+              controlUsers > 0
                 ? (data.control.accepted / data.control.total) * 100
                 : null
 
             const treatmentRate =
-              data.treatment.total > 0
+              treatmentUsers > 0
                 ? (data.treatment.accepted / data.treatment.total) * 100
                 : null
 
             return (
               <tr key={category}>
                 <td>{category}</td>
+
+                <td>
+                  {controlUsers}
+                </td>
+
+                <td>
+                  {treatmentUsers}
+                </td>
 
                 <td className={getCellClass(category, 'control')}>
                   {controlRate !== null
@@ -171,4 +190,4 @@ function ResultsTable({ userResults }) {
   )
 }
 
-export default ResultsTable
+export default DetailedResultsTable
