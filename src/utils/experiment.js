@@ -1,6 +1,6 @@
 export const TOTAL_QUESTIONS = 7
 export const STARTING_BALANCE = 50
-export const DEFAULT_TIME_LIMIT = 10
+export const DEFAULT_TIME_LIMIT = 15
 export const WARNING_THRESHOLD = 3
 
 export const pastelColors = [
